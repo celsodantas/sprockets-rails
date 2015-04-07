@@ -79,11 +79,11 @@ module Sprockets
 
         if environment = assets_environment
           if asset = environment[path]
-            unless options[:debug]
-              if !precompiled_assets.include?(asset)
-                raise AssetNotPrecompiled.new(asset.logical_path)
-              end
-            end
+            # unless options[:debug]
+            #   if !precompiled_assets.include?(asset)
+            #     raise AssetNotPrecompiled.new(asset.logical_path)
+            #   end
+            # end
             return asset.digest_path
           end
         end
@@ -208,36 +208,36 @@ module Sprockets
             path = "#{path}#{extname}"
           end
 
-          if asset = env[path]
-            if !precompiled_assets.include?(asset)
-              raise AssetNotPrecompiled.new(asset.logical_path)
-            end
-          end
+          # if asset = env[path]
+          #   if !precompiled_assets.include?(asset)
+          #     raise AssetNotPrecompiled.new(asset.logical_path)
+          #   end
+          # end
 
           asset
         end
 
         # Internal: Generate a Set of all precompiled assets.
-        def precompiled_assets
-          @precompiled_assets ||= begin
-            assets = Set.new
-
-            filters = (assets_precompile || []).map { |f|
-              Sprockets::Manifest.compile_match_filter(f)
-            }
-
-            env = assets_environment
-            env.logical_paths do |logical_path, filename|
-              if filters.any? { |f| f.call(logical_path, filename) }
-                env.find_all_linked_assets(filename) do |asset|
-                  assets << asset
-                end
-              end
-            end
-
-            assets
-          end
-        end
+        # def precompiled_assets
+        #   @precompiled_assets ||= begin
+        #     assets = Set.new
+        #
+        #     filters = (assets_precompile || []).map { |f|
+        #       Sprockets::Manifest.compile_match_filter(f)
+        #     }
+        #
+        #     env = assets_environment
+        #     env.logical_paths do |logical_path, filename|
+        #       if filters.any? { |f| f.call(logical_path, filename) }
+        #         env.find_all_linked_assets(filename) do |asset|
+        #           assets << asset
+        #         end
+        #       end
+        #     end
+        #
+        #     assets
+        #   end
+        # end
     end
   end
 end
